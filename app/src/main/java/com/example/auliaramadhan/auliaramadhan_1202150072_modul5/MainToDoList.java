@@ -142,6 +142,11 @@ public class MainToDoList extends AppCompatActivity {
         super.onPostResume();
         Log.d("ss", "lagi diresume");
 //        mAdapter.notifyDataSetChanged();
+        SharedPreferences sharedPref =
+                PreferenceManager.getDefaultSharedPreferences(this);
+        String colour = sharedPref.getString("sync_frequency", "white");
+        changeBackgorundrecyclerview(colour);
+
     }
 
     @Override
