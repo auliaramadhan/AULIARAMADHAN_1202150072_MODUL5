@@ -17,12 +17,12 @@ public class ToDoListOpenHelper extends SQLiteOpenHelper {
     // It's a good idea to always define a log tag like this.
     private static final String TAG = ToDoList.class.getSimpleName();
 
-    // has to be 1 first time or app will crash
+    // versi, nama table dan database table
     private static final int DATABASE_VERSION = 1;
     private static final String WORD_LIST_TABLE = "table_kegiatan";
     private static final String DATABASE_NAME = "todolist";
 
-    // Column names...
+    // Nama Column
     public static final String COL_ID = "_id";
     public static final String COL_NAME = "nama";
     public static final String COL_TODO = "list";
@@ -48,8 +48,10 @@ public class ToDoListOpenHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
+//      membuat table pada database jika baru pertma kali
         sqLiteDatabase.execSQL(TODO_LIST_TABLE_CREATE);
         //fillDatabaseWithData(sqLiteDatabase);
 
@@ -66,6 +68,7 @@ public class ToDoListOpenHelper extends SQLiteOpenHelper {
 //    }
 
     public ToDoList query(int position) {
+//        memebuat kode untuk query table
         String query = "SELECT  * FROM " + WORD_LIST_TABLE +
                 " ORDER BY " + COL_ID + " ASC " +
                 "LIMIT " + position + ", 1" ;
@@ -74,10 +77,13 @@ public class ToDoListOpenHelper extends SQLiteOpenHelper {
 
         try {
             if (mReadableDB == null) {
+                // mengambil akses sqlite database yang dapat di read
                 mReadableDB = getReadableDatabase();
             }
             cursor = mReadableDB.rawQuery(query, null);
+//            cursor mengambil data paling atas
             cursor.moveToFirst();
+//            inserrt data ke objek kelas Todolist
             entry.setId(cursor.getInt(cursor.getColumnIndex(COL_ID)));
             entry.setNamaKegiatan(cursor.getString(cursor.getColumnIndex(COL_NAME)));
             entry.setKegiatan(cursor.getString(cursor.getColumnIndex(COL_TODO)));
@@ -91,14 +97,18 @@ public class ToDoListOpenHelper extends SQLiteOpenHelper {
 
     }
 
+    //method insert
     public long insert(String nama, String kegiatan, int prioritas) {
         long newId = 0;
+//        membuat container yang akan duginakan dalam method insert Sqlite
         ContentValues values = new ContentValues();
+
         values.put(COL_NAME, nama);
         values.put(COL_TODO, kegiatan);
         values.put(COL_PRIOR, prioritas);
         try {
             if (mWritableDB == null) {
+                // mengambil akses sqlite database yang dapat di write
                 mWritableDB = getWritableDatabase();
             }
             newId = mWritableDB.insert(WORD_LIST_TABLE, null, values);
@@ -108,6 +118,7 @@ public class ToDoListOpenHelper extends SQLiteOpenHelper {
         return newId;
     }
 
+    // menghapus row pada table sesuai id
     public int delete(int id) {
         int deleted = 0;
         try {
@@ -122,6 +133,7 @@ public class ToDoListOpenHelper extends SQLiteOpenHelper {
         return deleted;
     }
 
+    // menghitung jumlah row pada table
     public long count() {
         if (mReadableDB == null) {
             mReadableDB = getReadableDatabase();

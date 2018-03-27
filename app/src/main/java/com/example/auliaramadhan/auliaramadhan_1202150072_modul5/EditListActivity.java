@@ -9,30 +9,28 @@ import android.widget.TextView;
 
 public class EditListActivity extends AppCompatActivity {
 
-    private TextView nama;
-    private TextView kegiatan;
-    private TextView prioritas;
-
-    public static final String EXTRA_REPLY = "com.example.android.wordlistsql.REPLY";
-
+    private EditText nama, kegiatan, prioritas;
     int mId = MainToDoList.WORD_ADD;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_list);
-        nama = (TextView) findViewById(R.id.textnama);
-        kegiatan = (TextView) findViewById(R.id.textkegiatan);
-        prioritas = (TextView) findViewById(R.id.textprioritas);
+//        mengmabil id widget texview yang dibuat
+        nama = (EditText) findViewById(R.id.textnama);
+        kegiatan = (EditText) findViewById(R.id.textkegiatan);
+        prioritas = (EditText) findViewById(R.id.textprioritas);
 
     }
 
     public void insertKegiatan(View view) {
         Intent replyIntent = new Intent();
         replyIntent.putExtra(ToDoListAdapter.EXTRA_ID, mId);
+//        set extra intent yang akan dikembalikan ke main activity dan di insert ke database
         replyIntent.putExtra("nama", nama.getText().toString());
         replyIntent.putExtra("kegiatan", kegiatan.getText().toString());
         replyIntent.putExtra("prioritas", Integer.parseInt(prioritas.getText().toString()));
+//        set reesult dan menyelesaikan aktivitas lalu kembalu ke aktivitas sebelumnya
         setResult(RESULT_OK, replyIntent);
         finish();
 //

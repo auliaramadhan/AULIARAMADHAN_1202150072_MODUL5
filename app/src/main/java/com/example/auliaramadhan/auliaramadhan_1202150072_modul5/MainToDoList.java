@@ -38,11 +38,13 @@ public class MainToDoList extends AppCompatActivity {
         // BUAT OBJEK DB dari kelas openhelper yang dibuat
         mDB = new ToDoListOpenHelper(this);
 
+//        membuat adapater dan mengisi recycler view
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerviewlisttodo);
         mAdapter = new ToDoListAdapter(this, mDB);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+//        mengambil shared preferences yang telah disimpan
         PreferenceManager.setDefaultValues(this, R.xml.pref_general, false);
         PreferenceManager.setDefaultValues(this, R.xml.pref_notification, false);
         PreferenceManager.setDefaultValues(this, R.xml.pref_data_sync, false);
@@ -52,7 +54,7 @@ public class MainToDoList extends AppCompatActivity {
         changeBackgorundrecyclerview(colour);
 
 
-
+        // memberi fungsi on click pada FAB
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,7 +67,7 @@ public class MainToDoList extends AppCompatActivity {
             }
         });
 
-        //Helper class for creating swipe to dismiss and drag and drop functionality
+        //Helper class untuk membuat swipe
         ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback
                 (ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT ,
                         ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -88,6 +90,7 @@ public class MainToDoList extends AppCompatActivity {
         helper.attachToRecyclerView(mRecyclerView);
     }
 
+    // metod ubah warna
     private void changeBackgorundrecyclerview(String color) {
 
         switch (color){
@@ -107,16 +110,18 @@ public class MainToDoList extends AppCompatActivity {
     }
 
 
+    // proses data dari intent aktivitas edit list
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         // Add code to update the database.
         if (requestCode == WORD_EDIT) {
             if (resultCode == RESULT_OK) {
+                // mnegambil data extara intent
                 String nama = data.getStringExtra("nama");
                 String kegiatan = data.getStringExtra("kegiatan");
                 int priorotas = data.getIntExtra("prioritas", -99);
-                // Update the database
+                // Update  database bergantung apakah edit atau add
                 if (!TextUtils.isEmpty(nama)) {
                     int id = data.getIntExtra(ToDoListAdapter.EXTRA_ID, -99);
                     if (id == WORD_ADD) {
@@ -137,6 +142,7 @@ public class MainToDoList extends AppCompatActivity {
         }
     }
 
+    // untuk mengganti warna ketika setting colour diganti
     @Override
     protected void onPostResume() {
         super.onPostResume();
@@ -149,12 +155,14 @@ public class MainToDoList extends AppCompatActivity {
 
     }
 
+    // membuat menu pada layout
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_coba2, menu);
         return true;
     }
 
+//    menuju aktivitas setting ketika menu setting dipilih
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 

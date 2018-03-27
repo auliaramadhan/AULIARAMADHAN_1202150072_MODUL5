@@ -2,7 +2,10 @@ package com.example.auliaramadhan.auliaramadhan_1202150072_modul5;
 
 /**
  * Created by Aulia Ramadhan on 23/03/2018.
+ * kelas ini untuk  membuat objek yang akan digunakan
+ * untuk menyimpan data yang diambil dari database
  */
+
 
 public class ToDoList {
     private int id;
